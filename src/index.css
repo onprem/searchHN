@@ -20,3 +20,10 @@ ul, ol {
 	padding: 0;
 	list-style-type: none;
 }
+a {
+  -webkit-transition: color 0.1s linear;
+  -moz-transition: color 0.1s linear;
+  transition: color 0.1s linear;
+  color: #477DCA;
+  text-decoration: none;
+}
