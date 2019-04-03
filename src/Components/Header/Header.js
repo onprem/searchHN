@@ -1,31 +1,50 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import { connect } from 'react-redux'
 // import Header from '../Header/Header';
 // import Section from '../Section/Section';
 import logo from '../../assets/logo-hn-search.png';
 import algoliaLogo from '../../assets/algolia-logo-white.svg';
 import './Header.css';
+import {
+  changeSearch,
+  fetchArticles
+} from '../../actions'
 
 class Header extends Component {
-
+	handleSearchChange = (event) => {
+		this.props.onSearchChange(event);
+		const { query, articleType, timeRange, sort } = this.props.searchSettings;
+		const { page } = this.props.searchResults;
+		this.props.getArticles(query, articleType, timeRange, page, sort);
+	}
 	render() {
+		const { user,  searchResults } = this.props;
+		const { name, isLoggedIn } = user;
+		const { query } = searchResults;
 		return (
 			<header className="page-header">
 				<div className="logo-wrapper">
 					<Link className='logo' to='/?'>
 						<img src={logo} alt='logo'/>
-						<div className="logo-name">
-							Search
-							<br />
-							Hacker News
-						</div>
+						{(!isLoggedIn)?
+							<div className="logo-name">
+								Search
+								<br />
+								Hacker News
+							</div>
+						:
+							<div className="logo-name">
+								{ name }
+							</div>
+						}
 					</Link>
 				</div>
 				<div className="search-wrapper">
 					<div className="input-item-wrapper">
 						<i className="icon-search">
 						</i>
-						<input type="search" placeholder="Search stories by title, url or author" autoComplete="off" autoCapitalize="off" spellCheck="false" autoCorrect="off" autoFocus />
+						<input onChange={this.handleSearchChange} type="search" placeholder="Search stories by title, url or author" autoComplete="off" autoCapitalize="off" spellCheck="false" autoCorrect="off" autoFocus />
 					</div>
 					<span className="powered-by">
 						by 
@@ -41,5 +60,18 @@ class Header extends Component {
 		);
 	}
 }
-
-export default Header;
+function mapStateToProps(state) {
+  const { user, searchSettings, searchResults } = state
+  return {
+  	user,
+  	searchResults,
+    searchSettings
+  }
+}
+const mapDispatchToProps = dispatch =>{
+	return{
+		onSearchChange: (event) => dispatch(changeSearch(event.target.value)),
+		getArticles: (query, articleType, timeRange, page, sort) => dispatch(fetchArticles(query, articleType, timeRange, page, sort))
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
