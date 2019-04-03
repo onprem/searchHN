@@ -8,20 +8,20 @@ import algoliaLogo from '../../assets/algolia-logo-white.svg';
 import './Header.css';
 import {
   changeSearch,
+  changePage,
   fetchArticles
 } from '../../actions'
 
 class Header extends Component {
 	handleSearchChange = (event) => {
 		this.props.onSearchChange(event);
-		const { query, articleType, timeRange, sort } = this.props.searchSettings;
-		const { page } = this.props.searchResults;
-		this.props.getArticles(query, articleType, timeRange, page, sort);
+		this.props.pageChange(0)
+		const { articleType, timeRange, sort } = this.props.searchSettings;
+		this.props.getArticles(event.target.value, articleType, timeRange, 0, sort);
 	}
 	render() {
 		const { user,  searchResults } = this.props;
 		const { name, isLoggedIn } = user;
-		const { query } = searchResults;
 		return (
 			<header className="page-header">
 				<div className="logo-wrapper">
@@ -71,6 +71,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch =>{
 	return{
 		onSearchChange: (event) => dispatch(changeSearch(event.target.value)),
+		pageChange: (page) => dispatch(changePage(page)),
 		getArticles: (query, articleType, timeRange, page, sort) => dispatch(fetchArticles(query, articleType, timeRange, page, sort))
 	}
 }

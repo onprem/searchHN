@@ -105,6 +105,8 @@ const getLastYear = () => {
 
 export function fetchArticles(query, articleType, timeRange, page, sort) {
   return dispatch => {
+    
+    window.history.pushState(null, null, `/query=${query}/sort=${sort}/page=${page}/dateRange=${timeRange}/type=${articleType}`);
     dispatch(requestArticles(query, articleType, timeRange, page, sort))
     let sort_t, timeRange_t, articleType_t;
 
@@ -137,7 +139,9 @@ export function fetchArticles(query, articleType, timeRange, page, sort) {
     console.log(url);
     return fetch(url)
       .then(res => res.json())
-      .then(data => dispatch(receiveArticles(query, articleType, timeRange, page, sort, data)))
+      .then(data => {
+        dispatch(receiveArticles(query, articleType, timeRange, page, sort, data))
+      })
   }
 }
 
