@@ -1,21 +1,46 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 // import Header from '../Header/Header';
 import ButtonCard from './ButtonCard';
 import './Pagination.css';
+import {
+  changePage,
+  fetchArticles
+} from '../../actions'
 
 class Pagination extends Component {
+	handleClick = (event) => {
+		this.props.onButtonClick(parseInt(event.target.value)-1);
+		const { query, articleType, timeRange, sort } = this.props.searchSettings;
+		this.props.getArticles(query, articleType, timeRange, parseInt(event.target.value)-1, sort);
+	}
+	handleClickForward = (event) => {
+		const { query, articleType, timeRange, sort } = this.props.searchSettings;
+		const { page } = this.props.searchResults;
+		
+		this.props.onButtonClick(page+1);
+		this.props.getArticles(query, articleType, timeRange, page+1, sort);
+	}
+	handleClickBackward = (event) => {
+		const { query, articleType, timeRange, sort } = this.props.searchSettings;
+		const { page } = this.props.searchResults;
+		
+		this.props.onButtonClick(page-1);
+		this.props.getArticles(query, articleType, timeRange, page-1, sort);
+	}
 
 	render() {
-		
+		const { page, totalPages } = this.props.searchResults;
 		const createPagination = () => {
 			let buttons = [];
-			const currentIndex = 5;
-			const lastIndex = 50;
+			const currentIndex = parseInt(page)+1;
+			const lastIndex = parseInt(totalPages);
 			if ( currentIndex !== 1) {
 				buttons.push({
 					value: '<i class="icon-rewind"></i>',					
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClickBackward
 				});
 			}
 
@@ -25,7 +50,8 @@ class Pagination extends Component {
 				buttons.push({
 					value: 1,					
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClick
 				});
 				if (currentIndex-low > 2){
 					buttons.push({
@@ -39,7 +65,8 @@ class Pagination extends Component {
 				buttons.push({
 					value: currentIndex-i,					
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClick
 				});
 			}
 			buttons.push({
@@ -51,7 +78,8 @@ class Pagination extends Component {
 				buttons.push({
 					value: currentIndex+i+1,				
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClick
 				});
 			}
 			if (lastIndex - currentIndex >= 5) {
@@ -66,14 +94,16 @@ class Pagination extends Component {
 				buttons.push({
 					value: lastIndex,					
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClick
 				});
 			}
 			if ( lastIndex !== currentIndex){
 				buttons.push({
 					value: '<i class="icon-fast-forward"></i>',					
 					isActive: false,
-					isDisabled: false
+					isDisabled: false,
+					onClick: this.handleClickForward
 				});
 			}
 			return buttons;
@@ -85,7 +115,7 @@ class Pagination extends Component {
 		            value={button.value}
 		            isActive={button.isActive}
 		            isDisabled={button.isDisabled}
-		            isHidden={button.ishidden}
+		            onClick={button.onClick}
 		        />
 		    );
 		    return (
@@ -99,5 +129,18 @@ class Pagination extends Component {
 		);
 	}
 }
-
-export default Pagination;
+function mapStateToProps(state) {
+  const { user, searchSettings, searchResults } = state
+  return {
+  	user,
+  	searchResults,
+    searchSettings
+  }
+}
+const mapDispatchToProps = dispatch =>{
+	return{
+		onButtonClick: (page) => dispatch(changePage(page)),
+		getArticles: (query, articleType, timeRange, page, sort) => dispatch(fetchArticles(query, articleType, timeRange, page, sort))
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Pagination);
