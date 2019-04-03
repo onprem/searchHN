@@ -2,23 +2,14 @@ import React, { Component }from 'react';
 import {Route,Switch} from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home/Home';
-
 import { connect } from 'react-redux'
 import {
-  // changeSearch,
-  // changeSort,
-  // changeTime,
   userLogout,
   userLogin,
   fetchArticles
 } from './actions'
 
 class App extends Component {
-	// constructor(props) {
-	// 	super(props)
-	// 	//this.handleChange = this.handleChange.bind(this)
-	// 	//this.handleRefreshClick = this.handleRefreshClick.bind(this)
-	// }
 	componentDidMount() {
 		const { dispatch, searchSettings, searchResults, user } = this.props;
 		const { query, articleType, timeRange, sort } = searchSettings;
@@ -34,33 +25,10 @@ class App extends Component {
 		}
 	}
 
-	// componentDidUpdate(prevProps) {
-	// 	if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
-	// 		const { searchSettings, dispatch, searchResults } = this.props;
-	// 		const { query, articleType, timeRange, sort } = searchSettings;
-	// 		const { page } = searchResults;
-	// 		dispatch(fetchArticles(query, articleType, timeRange, page, sort))
-	// 	}
-	// }
-
-	// handleChange(nextSubreddit) {
-	// 	this.props.dispatch(selectSubreddit(nextSubreddit))
-	// 	this.props.dispatch(fetchPostsIfNeeded(nextSubreddit))
-	// }
-
-	// handleRefreshClick(e) {
-	// 	e.preventDefault()
-
-	// 	const { searchSettings, user, searchResults, dispatch } = this.props;
-	// 	const { query, articleType, timeRange, sort } = searchSettings;
-	// 	const { page } = searchResults;
-	// 	dispatch(fetchArticles(query, articleType, timeRange, page, sort))
-	// }
-
 	render() {
-		const { searchSettings, user, searchResults } = this.props;
+		const { searchSettings, searchResults } = this.props;
 		const { query, articleType, timeRange, sort } = searchSettings
-		const { data, number, timeTaken, page, totalPages } = searchResults
+		const { page } = searchResults
 
 	  	if(window.location.pathname==='/')
 			window.location.href=(`/query=${query}/sort=${sort}/page=${page}/dateRange=${timeRange}/type=${articleType}`);

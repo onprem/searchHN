@@ -41,9 +41,21 @@ class Home extends Component {
 	                onClickAway={() => this.setState({visibleModal: false})}
 	            >
 	                <div className='login-form'>
-	                    <input type="text" name="name" className="inputBox" placeholder="Name.." id="input_name" />
-	                    <input type="text" name="email" className="inputBox" placeholder="Email.." id="input_email" />
-	                    <input type="password" name="password" className="inputBox" placeholder="Password.." />
+	                	<label for="input_name" class="inp">
+							<input type="text" name="name" className="inputBox" placeholder="" id="input_name" />
+							<span class="label">Name</span>
+							<span class="border"></span>
+						</label>
+						<label for="input_email" class="inp">
+	                    	<input type="text" name="email" className="inputBox" placeholder="" id="input_email" />
+	                    	<span class="label">Email</span>
+							<span class="border"></span>
+						</label>
+						<label for="input_pass" class="inp">
+	                    	<input type="password" name="password" className="inputBox" placeholder="" id="input_pass" />
+	                    	<span class="label">Password</span>
+							<span class="border"></span>
+						</label>
 	                    <button type="submit" onClick={this.handleLogin}>Login</button>
 	                </div>
 	            </Modal>
