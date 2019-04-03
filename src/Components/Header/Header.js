@@ -34,6 +34,9 @@ class Header extends Component {
 						</a>
 					</span>
 				</div>
+				<div className='account-wrapper'>
+					<i className="icon-head"></i>
+				</div>
 			</header>
 		);
 	}

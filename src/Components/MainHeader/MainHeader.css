@@ -137,3 +137,8 @@
 		width: unset;
 	}
 }
+@media only screen and (max-width: 750px) {
+	.main .search-infos {
+		display: none;
+	}
+}

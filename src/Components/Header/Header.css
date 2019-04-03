@@ -115,6 +115,19 @@ input[type="search"] {
 	left: 4px;
 	vertical-align: bottom;
 }
+.icon-head::before {
+	content: "\e074";
+}
+.icon-head {
+	color: white;
+}
+.page-header .account-wrapper {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	font-size: 24px;
+}
+
 
 @media only screen and (max-width: 1200px) {
 	.page-header {
@@ -130,5 +143,13 @@ input[type="search"] {
 	}
 	.page-header .search-wrapper {
 		width: calc(90% - 50px);
+	}
+}
+@media only screen and (max-width: 450px) {
+	.page-header .powered-by {
+		display: none;
+	}
+	.page-header .search-wrapper .input-item-wrapper {
+		width: calc(100% - 10px);
 	}
 }
