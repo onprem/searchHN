@@ -8,8 +8,8 @@ import {
   // changeSearch,
   // changeSort,
   // changeTime,
-  // changeType,
-  // changePage,
+  userLogout,
+  userLogin,
   fetchArticles
 } from './actions'
 
@@ -20,10 +20,18 @@ class App extends Component {
 	// 	//this.handleRefreshClick = this.handleRefreshClick.bind(this)
 	// }
 	componentDidMount() {
-		const { dispatch, searchSettings, searchResults } = this.props;
+		const { dispatch, searchSettings, searchResults, user } = this.props;
 		const { query, articleType, timeRange, sort } = searchSettings;
 		const { page } = searchResults;
 		dispatch(fetchArticles(query, articleType, timeRange, page, sort))
+
+		if(!user.isLoggedIn){
+			if(window.localStorage.getItem('email') && window.localStorage.getItem('name')){
+				dispatch(userLogin(window.localStorage.getItem('name'), window.localStorage.getItem('email')))
+			} else {
+				dispatch(userLogout())
+			}
+		}
 	}
 
 	// componentDidUpdate(prevProps) {
@@ -61,15 +69,7 @@ class App extends Component {
 				<Switch>
 					<Route path="/query=:query?/sort=:sort/page=:page/dateRange=:dateRange/type=:type" render={(props) => {
 						return(
-							<Home {...props}
-								searchSettings={searchSettings}
-								searchResults={searchResults}
-								//updateSearchStats={this.updateSearchStats}
-								//updateSearchSettings={this.updateSearchSettings}
-								//initialPage={this.state.searchSettings.page}
-								//totalPages={this.state.searchRes.totalPage}
-								//updateSearchPage={this.updateSearchPage}
-							/>
+							<Home />
 						)
 					}}
 					/>

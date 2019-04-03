@@ -9,7 +9,8 @@ import './Header.css';
 import {
   changeSearch,
   changePage,
-  fetchArticles
+  fetchArticles,
+  userLogout
 } from '../../actions'
 
 class Header extends Component {
@@ -18,6 +19,11 @@ class Header extends Component {
 		this.props.pageChange(0)
 		const { articleType, timeRange, sort } = this.props.searchSettings;
 		this.props.getArticles(event.target.value, articleType, timeRange, 0, sort);
+	};
+	handleLogout = () => {
+		const storage = window.localStorage;
+		storage.clear();
+		this.props.setLogout()
 	}
 	render() {
 		const { user } = this.props;
@@ -54,7 +60,12 @@ class Header extends Component {
 					</span>
 				</div>
 				<div className='account-wrapper'>
-					<i className="icon-head"></i>
+					{(!isLoggedIn)?
+						<i className="icon-head" onClick={this.props.toggleModal}></i>
+					:
+						<span onClick={this.handleLogout}>LOGOUT</span>
+					}
+					
 				</div>
 			</header>
 		);
@@ -72,6 +83,7 @@ const mapDispatchToProps = dispatch =>{
 	return{
 		onSearchChange: (event) => dispatch(changeSearch(event.target.value)),
 		pageChange: (page) => dispatch(changePage(page)),
+		setLogout: () => dispatch(userLogout()),
 		getArticles: (query, articleType, timeRange, page, sort) => dispatch(fetchArticles(query, articleType, timeRange, page, sort))
 	}
 }
