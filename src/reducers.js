@@ -20,7 +20,7 @@ function searchSettings(state = {
   switch (action.type) {
     case CHANGE_TIME:
       return Object.assign({}, state, {
-        timeRange: action.timeR
+        timeRange: action.timeRange
       })
     case CHANGE_TYPE:
       return Object.assign({}, state, {

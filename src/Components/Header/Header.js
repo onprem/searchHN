@@ -20,7 +20,7 @@ class Header extends Component {
 		this.props.getArticles(event.target.value, articleType, timeRange, 0, sort);
 	}
 	render() {
-		const { user,  searchResults } = this.props;
+		const { user } = this.props;
 		const { name, isLoggedIn } = user;
 		return (
 			<header className="page-header">

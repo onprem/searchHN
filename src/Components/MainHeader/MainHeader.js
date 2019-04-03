@@ -1,8 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './MainHeader.css';
+import {
+  changeSort,
+  changeType,
+  changeTime,
+  changePage,
+  fetchArticles
+} from '../../actions'
 
 class MainHeader extends Component {
+	handleTypeChange = (event) => {
+		const { query, timeRange, sort } = this.props.searchSettings;
+		const articleType = event.currentTarget.getAttribute("value");
+		this.props.onTypeChange(articleType);
+		this.props.pageChange(0)	
+		this.props.getArticles(query, articleType, timeRange, 0, sort);
+	};
+	handleTypeClick = () => {
+		document.getElementById("typeDiv").classList.toggle("active");
+	};
+	handleSortChange = (event) => {
+		this.props.onSortChange(event.currentTarget.getAttribute("value"));
+		this.props.pageChange(0)
+		const { query, articleType, timeRange } = this.props.searchSettings;
+		this.props.getArticles(query, articleType, timeRange, 0, event.currentTarget.getAttribute("value"));
+	};
+	handleSortClick = () => {
+		document.getElementById("sortDiv").classList.toggle("active");
+	};
+	handleTimeChange = (event) => {
+		this.props.onTimeChange(event.currentTarget.getAttribute("value"));
+		this.props.pageChange(0)
+		const { query, articleType, sort } = this.props.searchSettings;
+		this.props.getArticles(query, articleType, event.currentTarget.getAttribute("value"), 0, sort);
+	};
+	handleTimeClick = () => {
+		document.getElementById("timeDiv").classList.toggle("active");
+	};
 
 	render() {
 		let type, sortt, time;
@@ -27,20 +62,20 @@ class MainHeader extends Component {
 		return (
 				<header>
 					<span className="filter-label">Search</span>
-					<div className="type-dropdown wrap-dd-select" dropdown-item-label="text" dropdown-model="ddTypeSelected" dropdown-onchange="selectType(selected)" dropdown-select="ddSelectType">
+					<div className="type-dropdown wrap-dd-select" id="typeDiv" onClick={this.handleTypeClick}>
 						<span className="selected">{ type }</span>
 						<ul className="dropdown">
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="all" onClick={this.handleTypeChange.bind(this)}>
 								<i className="dropdown-item">
 									All
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="story" onClick={this.handleTypeChange.bind(this)}>
 								<i className="dropdown-item">
 									Stories
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="comment" onClick={this.handleTypeChange.bind(this)}>
 								<i className="dropdown-item">
 									Comments
 								</i>
@@ -48,17 +83,17 @@ class MainHeader extends Component {
 						</ul>
 					</div>
 					<span className="filter-label">by</span>
-					<div className="type-dropdown wrap-dd-select" dropdown-item-label="text" dropdown-model="ddSortSelected" dropdown-onchange="sortBy(selected.value)" dropdown-select="ddSelectSort">
+					<div className="type-dropdown wrap-dd-select" id="sortDiv" onClick={this.handleSortClick.bind(this)}>
 						<span className="selected">
 							{ sortt }
 						</span>
 						<ul className="dropdown">
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="byPopularity" onClick={this.handleSortChange.bind(this)}>
 								<i className="dropdown-item">
 									Popularity
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="byDate" onClick={this.handleSortChange.bind(this)}>
 								<i className="dropdown-item">
 									Date
 								</i>
@@ -66,32 +101,32 @@ class MainHeader extends Component {
 						</ul>
 					</div>
 					<span className="filter-label">for</span>
-					<div className="type-dropdown wrap-dd-select" dropdown-item-label="text" dropdown-model="ddDateSelected" dropdown-onchange="selectDate(selected.value)" dropdown-select="ddSelectDate">
+					<div className="type-dropdown wrap-dd-select" onClick={this.handleTimeClick} id="timeDiv">
 						<span className="selected">
 							{ time }
 						</span>
 						<ul className="dropdown">
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="all" onClick={this.handleTimeChange.bind(this)}>
 								<i className="dropdown-item">
 									All time
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="last24h" onClick={this.handleTimeChange.bind(this)}>
 								<i className="dropdown-item">
 									Last 24h
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="pastWeek" onClick={this.handleTimeChange.bind(this)}>
 								<i className="dropdown-item">
 									Past Week
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="pastMonth" onClick={this.handleTimeChange.bind(this)}>
 								<i className="dropdown-item">
 									Past Month
 								</i>
 							</li>
-							<li className="dropdown-item" dropdown-select-item="item" dropdown-item-label="labelField">
+							<li className="dropdown-item" value="pastYear" onClick={this.handleTimeChange.bind(this)}>
 								<i className="dropdown-item">
 									Past Year
 								</i>
@@ -126,5 +161,13 @@ function mapStateToProps(state) {
     searchSettings
   }
 }
-
-export default connect(mapStateToProps)(MainHeader);
+const mapDispatchToProps = dispatch =>{
+	return{
+		onTypeChange: (value) => dispatch(changeType(value)),
+		onSortChange: (value) => dispatch(changeSort(value)),
+		onTimeChange: (value) => dispatch(changeTime(value)),
+		pageChange: (page) => dispatch(changePage(page)),
+		getArticles: (query, articleType, timeRange, page, sort) => dispatch(fetchArticles(query, articleType, timeRange, page, sort))
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);

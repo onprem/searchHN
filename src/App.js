@@ -5,11 +5,11 @@ import Home from './Components/Home/Home';
 
 import { connect } from 'react-redux'
 import {
-  changeSearch,
-  changeSort,
-  changeTime,
-  changeType,
-  changePage,
+  // changeSearch,
+  // changeSort,
+  // changeTime,
+  // changeType,
+  // changePage,
   fetchArticles
 } from './actions'
 
