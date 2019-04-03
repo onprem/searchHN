@@ -6,7 +6,7 @@ class Footer extends Component {
 	render() {
 		return (
 			<footer>
-				<ul class="list-inline">
+				<ul className="list-inline">
 					<li>
 						<a href="https://hn.algolia.com/about">About </a>
 					</li>

@@ -6,11 +6,6 @@ import './Home.css';
 
 class Home extends Component {
 
-	constructor(){
-		super();
-		this.state={
-		}
-	}
 	render() {
 		return (
 			<div className="home-container">
