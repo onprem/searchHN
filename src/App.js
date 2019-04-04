@@ -5,16 +5,12 @@ import Home from './Components/Home/Home';
 import { connect } from 'react-redux'
 import {
   userLogout,
-  userLogin,
-  fetchArticles
+  userLogin
 } from './actions'
 
 class App extends Component {
 	componentDidMount() {
-		const { dispatch, searchSettings, searchResults, user } = this.props;
-		const { query, articleType, timeRange, sort } = searchSettings;
-		const { page } = searchResults;
-		dispatch(fetchArticles(query, articleType, timeRange, page, sort))
+		const { dispatch, user } = this.props;
 
 		if(!user.isLoggedIn){
 			if(window.localStorage.getItem('email') && window.localStorage.getItem('name')){
@@ -37,7 +33,7 @@ class App extends Component {
 				<Switch>
 					<Route path="/query=:query?/sort=:sort/page=:page/dateRange=:dateRange/type=:type" render={(props) => {
 						return(
-							<Home />
+							<Home {...props} />
 						)
 					}}
 					/>

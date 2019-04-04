@@ -144,22 +144,3 @@ export function fetchArticles(query, articleType, timeRange, page, sort) {
       })
   }
 }
-
-// function shouldFetchPosts(state, subreddit) {
-//   const posts = state.postsBySubreddit[subreddit]
-//   if (!posts) {
-//     return true
-//   } else if (posts.isFetching) {
-//     return false
-//   } else {
-//     return posts.didInvalidate
-//   }
-// }
-
-// export function fetchArticlesWrapper(subreddit) {
-//   return (dispatch, getState) => {
-//     if (shouldFetchPosts(getState(), subreddit)) {
-//       return dispatch(fetchPosts(subreddit))
-//     }
-//   }
-// }

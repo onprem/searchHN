@@ -50,7 +50,7 @@ class Header extends Component {
 					<div className="input-item-wrapper">
 						<i className="icon-search">
 						</i>
-						<input onChange={this.handleSearchChange} type="search" placeholder="Search stories by title, url or author" autoComplete="off" autoCapitalize="off" spellCheck="false" autoCorrect="off" autoFocus />
+						<input id="search" onChange={this.handleSearchChange} type="search" placeholder="Search stories by title, url or author" autoComplete="off" autoCapitalize="off" spellCheck="false" autoCorrect="off" autoFocus />
 					</div>
 					<span className="powered-by">
 						by 
